@@ -1,7 +1,7 @@
 // --- apps/web/pages/dashboard.tsx ---
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Navbar from '../components/Navbar';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -13,6 +13,7 @@ export default function DashboardPage() {
 
   return (
     <main className="p-4">
+      <Navbar />
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
       <nav className="flex gap-4">
         <a className="text-blue-600" href="/patients">View Patients</a>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Navbar from '../../components/Navbar';
 
 type Patient = {
   id: string;
@@ -12,10 +13,13 @@ export default function PatientsList() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) return router.push('/login');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login');
+      return;
+    }
 
+    const fetchData = async () => {
       const res = await fetch('/api/patients', {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -28,6 +32,7 @@ export default function PatientsList() {
 
   return (
     <div className="p-4">
+      <Navbar />
       <h1 className="text-2xl font-bold mb-4">Patients</h1>
       <ul>
         {patients.map(p => (
