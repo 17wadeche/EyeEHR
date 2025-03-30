@@ -1,0 +1,140 @@
+// TurboRepo Monorepo Structure for EyeEHR (MVP Version)
+
+// apps/
+//   web/           --> React frontend (Next.js)
+//   api/           --> Node.js backend (Express)
+//   admin/         --> Optional admin dashboard frontend (optional now)
+
+// packages/
+//   config/        --> Shared config (ESLint, Prettier, Tailwind, etc.)
+//   ui/            --> Shared UI components (Tailwind/React)
+//   db/            --> Prisma setup + migrations
+
+// .env             --> Environment variables (not committed)
+// turbo.json       --> TurboRepo pipeline config
+
+// --- INITIAL CODE: apps/api/src/index.ts ---
+
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import morgan from 'morgan';
+import dotenv from 'dotenv';
+import routes from './routes';
+import authRoutes from './routes/auth';
+import patientRoutes from './routes/patients';
+
+// Load environment variables
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 4000;
+
+// Middleware
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+app.use(morgan('dev'));
+
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/patients', patientRoutes);
+
+app.listen(PORT, () => {
+  console.log(`EyeEHR API running on port ${PORT}`);
+});
+
+// --- User Authentication (JWT + Roles) ---
+// File: apps/api/src/routes/auth.ts
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { PrismaClient } from '@prisma/client';
+const router = express.Router();
+const prisma = new PrismaClient();
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+  const isValid = await bcrypt.compare(password, user.password);
+  if (!isValid) return res.status(401).json({ message: 'Invalid credentials' });
+
+  const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  res.json({ token });
+});
+
+export default router;
+
+// --- Patients Routes (Protected) ---
+// File: apps/api/src/routes/patients.ts
+import express from 'express';
+import { PrismaClient } from '@prisma/client';
+import { authenticate } from '../middleware/auth';
+const router = express.Router();
+const prisma = new PrismaClient();
+
+router.use(authenticate);
+
+router.get('/', async (req, res) => {
+  const patients = await prisma.patient.findMany();
+  res.json(patients);
+});
+
+router.post('/', async (req, res) => {
+  const { name, dob, email, phone } = req.body;
+  const patient = await prisma.patient.create({
+    data: { name, dob: new Date(dob), email, phone },
+  });
+  res.status(201).json(patient);
+});
+
+export default router;
+
+// --- Prisma Database Setup ---
+// File: packages/db/prisma/schema.prisma
+// Run: npx prisma migrate dev --name init
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  OPTOMETRIST
+  ASSISTANT
+}
+
+model Patient {
+  id          String   @id @default(uuid())
+  name        String
+  dob         DateTime
+  email       String?
+  phone       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// --- Frontend Setup (apps/web) ---
+// Next.js + Tailwind + Auth with JWT stored in localStorage (dev) or HttpOnly cookie (secure)
+// Pages: Login, Dashboard, Patient List, Add Patient
+
+// Example command to scaffold:
+// npx create-next-app@latest apps/web -e with-tailwindcss --ts
+
+// Create pages:
+// pages/login.tsx
+// pages/dashboard.tsx
+// pages/patients/index.tsx (list)
+// pages/patients/new.tsx (add new)
+
+// --- Deployment (Free Dev Setup) ---
+// DB: Free tier on Supabase / Railway PostgreSQL
+// Backend: Railway.app (free tier) or Render.com (free instance)
+// Frontend: Vercel (free for Next.js projects)
+
+// You are now ready to build and test EyeEHR MVP with a free dev stack.
