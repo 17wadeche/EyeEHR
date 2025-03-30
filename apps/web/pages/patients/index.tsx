@@ -1,3 +1,4 @@
+// --- apps/web/pages/patients/index.tsx ---
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
@@ -20,7 +21,7 @@ export default function PatientsList() {
     }
 
     const fetchData = async () => {
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/patients', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/patients`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
