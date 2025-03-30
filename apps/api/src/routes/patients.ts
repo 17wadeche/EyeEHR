@@ -1,3 +1,4 @@
+// --- apps/api/src/routes/patients.tsx ---
 import express from 'express';
 import prisma from '../lib/prisma';
 import authMiddleware from '../middleware/auth';

@@ -1,3 +1,4 @@
+// --- apps/api/src/routes/auth.ts ---
 import { Router, Request, Response } from 'express';
 
 const authRouter = Router();
