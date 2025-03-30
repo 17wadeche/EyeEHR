@@ -4,15 +4,13 @@ import authMiddleware from '../middleware/auth';
 
 const router = express.Router();
 router.use(authMiddleware);
-
 // GET /api/patients
-router.get('/', async (req, res) => {
+router.get('/', async (req: express.Request, res: express.Response) => {
   const patients = await prisma.patient.findMany();
   res.json(patients);
 });
-
 // POST /api/patients
-router.post('/', async (req, res) => {
+router.post('/', async (req: express.Request, res: express.Response) => {
   const { name, dob, email, phone } = req.body;
   try {
     const newPatient = await prisma.patient.create({
