@@ -12,7 +12,7 @@ model Patient {
   email  String?
   phone  String?
   createdAt DateTime @default(now())
-  appointments Appointment[]
+  appointment Appointment[]
 }
 model Appointment {
   id        String   @id @default(uuid())
