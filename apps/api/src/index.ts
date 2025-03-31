@@ -10,7 +10,7 @@ import { Request, Response, NextFunction } from 'express';
 dotenv.config();
 
 const app = express();
-const port = parseInt(process.env.PORT ?? '8080', 10);
+const port = parseInt(process.env.PORT || '10000', 10);
 const allowedOrigins = ['https://eyeehr.vercel.app'];
 const corsOptions: cors.CorsOptions = {
   origin: allowedOrigins,
