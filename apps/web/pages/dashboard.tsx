@@ -12,24 +12,34 @@ export default function DashboardPage() {
   }, [router]);
 
   return (
-    <main className="p-4 max-w-4xl mx-auto">
+    <main className="min-h-screen bg-gray-50">
       <Navbar />
-      <h1 className="text-3xl font-semibold mb-6">Dashboard</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <a
-          href="/patients"
-          className="block border p-6 rounded-lg shadow hover:shadow-md transition bg-white"
-        >
-          <h2 className="text-lg font-medium text-blue-600">📋 View Patients</h2>
-          <p className="text-sm text-gray-500">Browse the full patient list</p>
-        </a>
-        <a
-          href="/patients/new"
-          className="block border p-6 rounded-lg shadow hover:shadow-md transition bg-white"
-        >
-          <h2 className="text-lg font-medium text-blue-600">➕ Add New Patient</h2>
-          <p className="text-sm text-gray-500">Create a new patient record</p>
-        </a>
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold text-gray-800 mb-8">Dashboard</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <a
+            href="/patients"
+            className="flex flex-col justify-between p-8 bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+          >
+            <div>
+              <h2 className="text-2xl font-semibold text-blue-600 mb-2">
+                📋 View Patients
+              </h2>
+              <p className="text-gray-600">Browse the full patient list</p>
+            </div>
+          </a>
+          <a
+            href="/patients/new"
+            className="flex flex-col justify-between p-8 bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+          >
+            <div>
+              <h2 className="text-2xl font-semibold text-blue-600 mb-2">
+                ➕ Add New Patient
+              </h2>
+              <p className="text-gray-600">Create a new patient record</p>
+            </div>
+          </a>
+        </div>
       </div>
     </main>
   );
