@@ -23,7 +23,6 @@ authRouter.post('/register', async (req: Request, res: Response): Promise<void> 
   const hashedPassword = await bcrypt.hash(password, 10);
   const token = jwt.sign({ email, role }, 'my_secret_key', { expiresIn: '1h' });
   res.status(201).json({ token });
-  return;
 });
 
 export default authRouter;

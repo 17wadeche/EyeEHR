@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import patientRoutes from './routes/patients';
+import authMiddleware from './middleware/auth';
 import authRouter from './routes/auth';
 
 dotenv.config();
@@ -13,7 +14,7 @@ app.options('*', cors());
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRouter);
-app.use('/api/patients', patientRoutes);
+app.use('/api/patients', authMiddleware, patientRoutes);
 app.get('/', (req, res) => {
   console.log("Received GET / request");
   res.send("EyeEHR API is live 🚀");

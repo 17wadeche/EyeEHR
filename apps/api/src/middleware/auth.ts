@@ -1,7 +1,11 @@
 // --- apps/api/src/middleware/auth.ts ---
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 
-const authMiddleware: RequestHandler = (req: Request, res: Response, next: NextFunction): void => {
+const authMiddleware: RequestHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     res.status(401).json({ error: 'Unauthorized' });
