@@ -12,6 +12,7 @@ const app = express();
 const port = parseInt(process.env.PORT ?? '8080', 10);
 app.use(cors());
 app.use(express.json());
+app.options('*', cors());
 app.use('/api/auth', authRouter);
 app.use('/api/patients', authMiddleware, patientRoutes);
 app.get('/', (req, res) => {
