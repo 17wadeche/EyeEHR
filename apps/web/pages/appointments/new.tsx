@@ -9,10 +9,15 @@ export default function NewAppointment() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) return router.push('/login');
+    if (!token) {
+      // Don’t return the Promise; just call router.push
+      router.push('/login');
+      return;
+    }
+
     const fetchPatients = async () => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/patients`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       setPatients(data);
@@ -28,40 +33,48 @@ export default function NewAppointment() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(form)
+      body: JSON.stringify(form),
     });
-    if (res.ok) router.push('/appointments');
-    else alert('Failed to schedule appointment');
+    if (res.ok) {
+      router.push('/appointments');
+    } else {
+      alert('Failed to schedule appointment');
+    }
   };
 
   return (
     <Layout>
       <h1 className="text-2xl font-semibold mb-4">New Appointment</h1>
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow flex flex-col gap-4 max-w-md">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-lg shadow flex flex-col gap-4 max-w-md"
+      >
         <select
           value={form.patientId}
-          onChange={e => setForm({ ...form, patientId: e.target.value })}
+          onChange={(e) => setForm({ ...form, patientId: e.target.value })}
           required
           className="border rounded p-2"
         >
           <option value="">Select Patient</option>
-          {patients.map(p => (
-            <option key={p.id} value={p.id}>{p.name}</option>
+          {patients.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.name}
+            </option>
           ))}
         </select>
         <input
           type="date"
           value={form.date}
-          onChange={e => setForm({ ...form, date: e.target.value })}
+          onChange={(e) => setForm({ ...form, date: e.target.value })}
           className="border rounded p-2"
           required
         />
         <input
           type="time"
           value={form.time}
-          onChange={e => setForm({ ...form, time: e.target.value })}
+          onChange={(e) => setForm({ ...form, time: e.target.value })}
           className="border rounded p-2"
           required
         />
