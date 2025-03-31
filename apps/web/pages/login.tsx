@@ -29,8 +29,26 @@ export default function LoginPage() {
     <main className="flex flex-col items-center justify-center h-screen p-4">
       <h1 className="text-2xl mb-4">Login to EyeEHR</h1>
       <form onSubmit={handleLogin} className="flex flex-col gap-2 w-80">
-        <input className="border p-2" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-        <input className="border p-2" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+        <input
+          className="border p-2"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+          name="email"
+          id="loginEmail"
+        />
+        <input 
+          className="border p-2"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+          name="password"
+          id="loginPassword"
+        />
         <button className="bg-blue-600 text-white p-2 rounded" type="submit">Login</button>
       </form>
     </main>

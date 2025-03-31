@@ -12,6 +12,7 @@ const app = express();
 const port = parseInt(process.env.PORT ?? '8080', 10);
 app.use(cors({
   origin: [
+    '*',
     'https://eyeehr-5d8qbu68h-cheyanne-bronk-wades-projects.vercel.app',
     'https://eyeehr.vercel.app',
   ],
