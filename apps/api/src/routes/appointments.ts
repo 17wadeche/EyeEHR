@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
   const appointmentDate = new Date(dateTimeString);
 
   try {
-    const appointment = await prisma.appointments.create({
+    const appointment = await prisma.appointment.create({
       data: {
         patientId,
         date: appointmentDate,
