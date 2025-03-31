@@ -15,7 +15,8 @@ app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/patients', patientRoutes);
 app.get('/', (req, res) => {
-  res.send('EyeEHR API is live 🚀');
+  console.log("Received GET / request");
+  res.send("EyeEHR API is live 🚀");
 });
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
