@@ -1,15 +1,34 @@
-// --- apps/api/src/routes/patients.tsx ---
+// apps/api/src/routes/patients.ts
 import express from 'express';
 import prisma from '../lib/prisma';
 import authMiddleware from '../middleware/auth';
 
 const router = express.Router();
-router.use(authMiddleware);
-router.get('/', async (req: express.Request, res: express.Response) => {
-  const patients = await prisma.patient.findMany();
-  res.json(patients);
+router.get('/', async (req, res) => {
+  try {
+    const patients = await prisma.patient.findMany();
+    res.json(patients);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch patients' });
+  }
 });
-router.post('/', async (req: express.Request, res: express.Response) => {
+
+// GET single patient by ID
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const patient = await prisma.patient.findUnique({ where: { id } });
+    if (!patient) {
+      res.status(404).json({ error: 'Patient not found' });
+    }
+    res.json(patient);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch patient' });
+  }
+});
+
+// POST new patient
+router.post('/', async (req, res) => {
   const { name, dob, email, phone } = req.body;
   try {
     const newPatient = await prisma.patient.create({
@@ -25,4 +44,5 @@ router.post('/', async (req: express.Request, res: express.Response) => {
     res.status(500).json({ error: 'Failed to add patient' });
   }
 });
+
 export default router;
