@@ -19,7 +19,6 @@ export default function PatientsList() {
       router.push('/login');
       return;
     }
-
     const fetchData = async () => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/patients`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -32,16 +31,20 @@ export default function PatientsList() {
   }, [router]);
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-4xl mx-auto">
       <Navbar />
-      <h1 className="text-2xl font-bold mb-4">Patients</h1>
-      <ul>
+      <h1 className="text-3xl font-semibold mb-6">Patients</h1>
+      <div className="grid gap-4">
         {patients.map(p => (
-          <li key={p.id} className="border-b py-2">
-            {p.name} - {new Date(p.dob).toLocaleDateString()}
-          </li>
+          <div key={p.id} className="border rounded-lg p-4 shadow hover:shadow-md transition">
+            <h2 className="text-lg font-medium">{p.name}</h2>
+            <p className="text-gray-600">DOB: {new Date(p.dob).toLocaleDateString()}</p>
+          </div>
         ))}
-      </ul>
+        {patients.length === 0 && (
+          <p className="text-gray-500 italic">No patients found.</p>
+        )}
+      </div>
     </div>
   );
 }
