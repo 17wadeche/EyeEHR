@@ -1,3 +1,4 @@
+// aaps/web/pages/appointments/new.tsx
 import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import { useRouter } from 'next/router';
@@ -10,7 +11,6 @@ export default function NewAppointment() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      // Don’t return the Promise; just call router.push
       router.push('/login');
       return;
     }

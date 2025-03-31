@@ -65,8 +65,6 @@ export default function ReportsPage() {
           </button>
         ))}
       </div>
-
-      {/* Billing Summary Table */}
       {activeTab === 'Billing Summary' && billing.length > 0 && (
         <div>
           <button
@@ -97,8 +95,6 @@ export default function ReportsPage() {
           </table>
         </div>
       )}
-
-      {/* Rx Export Table */}
       {activeTab === 'Rx Export' && rxData.length > 0 && (
         <div>
           <button
