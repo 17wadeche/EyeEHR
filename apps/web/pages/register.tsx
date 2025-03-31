@@ -25,6 +25,7 @@ export default function RegisterPage() {
       console.log('Response data:', data);
       if (res.ok) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('role', data.role);
         router.push('/dashboard');
       } else {
         alert(data.message || 'Registration failed');
