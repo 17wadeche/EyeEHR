@@ -7,23 +7,31 @@ export default function RegisterPage() {
     name: '',
     email: '',
     password: '',
-    role: 'optometrist' // default role; could also be 'office_manager'
+    role: 'optometrist'
   });
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form)
-    });
-    const data = await res.json();
-    if (res.ok) {
-      localStorage.setItem('token', data.token);
-      router.push('/dashboard');
-    } else {
-      alert(data.message || 'Registration failed');
+    console.log('Submitting registration with:', form);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      console.log('Response status:', res.status);
+      const data = await res.json();
+      console.log('Response data:', data);
+      if (res.ok) {
+        localStorage.setItem('token', data.token);
+        router.push('/dashboard');
+      } else {
+        alert(data.message || 'Registration failed');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      alert('An error occurred during registration');
     }
   };
 
@@ -63,9 +71,7 @@ export default function RegisterPage() {
           <option value="optometrist">Optometrist</option>
           <option value="office_manager">Office Manager</option>
         </select>
-        <button type="submit" className="bg-green-600 text-white p-2 rounded">
-          Register
-        </button>
+        <button className="bg-green-600 text-white p-2 rounded" type="submit">Register</button>
       </form>
     </main>
   );
