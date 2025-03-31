@@ -9,7 +9,7 @@ import {
   startOfWeek,
   getDay,
 } from 'date-fns';
-import enUS from 'date-fns/locale/en-US';
+import { enUS } from 'date-fns/locale/en-US';
 import { useRouter } from 'next/router';
 
 type Appointment = {
