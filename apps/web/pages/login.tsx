@@ -38,6 +38,7 @@ export default function LoginPage() {
           required
           name="email"
           id="loginEmail"
+          autoComplete="email"
         />
         <input 
           className="border p-2"
@@ -48,6 +49,7 @@ export default function LoginPage() {
           required
           name="password"
           id="loginPassword"
+          autoComplete="current-password"
         />
         <button className="bg-blue-600 text-white p-2 rounded" type="submit">Login</button>
       </form>
