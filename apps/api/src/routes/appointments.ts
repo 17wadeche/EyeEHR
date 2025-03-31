@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, Router } from 'express';
 import prisma from '../lib/prisma';
 
 const router = express.Router();
@@ -6,11 +6,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const { patientId, date } = req.query;
   const filters: any = {};
-  
   if (patientId) {
     filters.patientId = String(patientId);
   }
-  
   if (date) {
     const startOfDay = new Date(date as string);
     const endOfDay = new Date(date as string);
@@ -20,7 +18,6 @@ router.get('/', async (req, res) => {
       lte: endOfDay,
     };
   }
-  
   try {
     const appointments = await prisma.appointment.findMany({
       where: filters,
@@ -32,8 +29,7 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch appointments' });
   }
 });
-
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   try {
     const appointment = await prisma.appointment.findUnique({
@@ -41,7 +37,7 @@ router.get('/:id', async (req, res) => {
       include: { patient: true },
     });
     if (!appointment) {
-      return res.status(404).json({ error: 'Appointment not found' });
+      res.status(404).json({ error: 'Appointment not found' });
     }
     res.json(appointment);
   } catch (error) {
@@ -49,7 +45,6 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch appointment' });
   }
 });
-
 router.post('/', async (req, res) => {
   const { patientId, date, time } = req.body;
   const dateTimeString = `${date}T${time}:00Z`;
@@ -67,7 +62,6 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: 'Failed to create appointment' });
   }
 });
-
 router.patch('/:id', async (req, res) => {
   const { id } = req.params;
   const { patientId, date, time } = req.body;
@@ -78,7 +72,6 @@ router.patch('/:id', async (req, res) => {
     const appointmentDate = new Date(dateTimeString);
     updateData.date = appointmentDate;
   }
-  
   try {
     const updatedAppointment = await prisma.appointment.update({
       where: { id },
@@ -90,7 +83,6 @@ router.patch('/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to update appointment' });
   }
 });
-
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -101,5 +93,4 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to delete appointment' });
   }
 });
-
 export default router;
