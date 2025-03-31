@@ -1,6 +1,9 @@
 FROM node:18-alpine
+RUN apk add --no-cache python3 make g++
 WORKDIR /apps/api
+COPY package*.json ./
+RUN npm install
 COPY . .
-RUN npm install && npm run build
-EXPOSE 3001
+RUN npm run build
+EXPOSE 8080
 CMD ["npm", "start"]
