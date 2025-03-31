@@ -9,15 +9,17 @@ export default function Home() {
           The future of optometry records management. Log in or register to begin.
         </p>
         <div className="mt-8 flex justify-center gap-6">
-          <Link href="/login">
-            <a className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition duration-300">
-              Login
-            </a>
+          <Link
+            href="/login"
+            className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition duration-300"
+          >
+            Login
           </Link>
-          <Link href="/register">
-            <a className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600 transition duration-300">
-              Register
-            </a>
+          <Link
+            href="/register"
+            className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600 transition duration-300"
+          >
+            Register
           </Link>
         </div>
       </div>
