@@ -13,3 +13,9 @@ model Patient {
   phone  String?
   createdAt DateTime @default(now())
 }
+model Appointment {
+  id        String   @id @default(uuid())
+  patientId String
+  date      DateTime
+  patient   Patient  @relation(fields: [patientId], references: [id])
+}
