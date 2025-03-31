@@ -10,8 +10,12 @@ dotenv.config();
 
 const app = express();
 const port = parseInt(process.env.PORT ?? '8080', 10);
-app.options('*', cors());
-app.use(cors());
+app.use(cors({
+  origin: 'https://eyeehr.vercel.app',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/patients', authMiddleware, patientRoutes);
